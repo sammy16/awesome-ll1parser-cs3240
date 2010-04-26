@@ -7,13 +7,21 @@ package org.generic;
  * @date 2010/18/4
  */ 
 public class Symbol {
-	
 	// name of the symbol
 	protected String name;
-	
-	// identically-named symbols are assumed to be identical
+	/**
+	 * Returns true if both symbols are identically-named
+	 * @param Symbol symbol were comparing this to
+	 */
 	public boolean equals(Symbol s)
 	{
 		return s.name.equals(name);
+	}
+	/**
+	 * Returns the symbol's name
+	 * @return name of the Symbol
+	 */
+	public String getName() {
+		return name;
 	}
 }

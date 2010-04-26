@@ -1,4 +1,4 @@
-package org;
+package org.parser;
 import java.util.ArrayList;
 
 import org.generic.Kind;

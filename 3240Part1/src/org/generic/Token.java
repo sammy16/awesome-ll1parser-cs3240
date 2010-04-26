@@ -140,56 +140,11 @@ public class Token extends Symbol {
 	 * @return String string of the Token
 	 */
 	public String toString() {
-		if ( kind == Kind.BEGIN ) {
-			return "BEGIN";
-		}
-		else if ( kind == Kind.END ) {
-			return "END";
-		}
-		else if ( kind == Kind.ASSIGN ) {
-			return "ASSIGN";
+		if ( kind == Kind.ID ) {
+			return name;
 		}
 		else if ( kind == Kind.INTNUM ) {
 			return Integer.toString(nval);
-		}
-		else if ( kind == Kind.COMMA ) {
-			return ",";
-		}
-		else if ( kind == Kind.SEMICOLON ) {
-			return ";";
-		}
-		else if ( kind == Kind.LEFTPAR ) {
-			return "(";
-		}
-		else if ( kind == Kind.RIGHTPAR ) {
-			return ")";
-		}
-		else if ( kind == Kind.PLUS ) {
-			return "+";
-		}
-		else if ( kind == Kind.MINUS ) {
-			return "-";
-		}
-		else if ( kind == Kind.MULTIPLY ) {
-			return "*";
-		}
-		else if ( kind == Kind.MODULO ) {
-			return "%";
-		}
-		else if ( kind == Kind.ID ) {
-			return name;
-		}
-		else if ( kind == Kind.READ ) {
-			return "READ";
-		}
-		else if ( kind == Kind.PRINT ) {
-			return "PRINT";
-		}
-		else if ( kind == Kind.ERROR ) {
-			return "ERROR";
-		}
-		else if ( kind == Kind.DOLLAR ) {
-			return "$";
 		}
 		else {
 			return kind.toString();
