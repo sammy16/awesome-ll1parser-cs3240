@@ -1,6 +1,7 @@
 package org;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -49,14 +50,49 @@ public class TokenParserTableFactory {
 		}
 	}
 	
+	// reads in lines until it finds one such non-blank line
+	// allows for some flexibility in the file format
+	public String readLine(BufferedReader buffer)
+	{
+		String value = "";
+        do
+        {
+        	try
+        	{
+        		value = buffer.readLine();
+        	}
+        	catch(IOException e)
+        	{
+        		value = null;
+        		break;
+        	}
+        }
+        while (value.trim().equals(""));
+        
+        return value;
+	}
+	
 	public void ParseFile(BufferedReader buffer)
 	{
-		try
+		// read in the tokens and nonterminals and store them appropriately
+		String tokens = readLine(buffer);
+		String nonterminals = readLine(buffer);
+		
+		// read in the start symbol
+		String startSymbol = readLine(buffer);
+		startSymbol = startSymbol.substring(6);
+		System.out.println("Start symbol:" + startSymbol);
+		
+		// read in the grammar rules
+		String rule;
+		ArrayList<String> grammarRules = new ArrayList<String>();
+		while( (rule = readLine(buffer)) != null)
 		{
-			System.out.println(buffer.readLine());
-		} catch (IOException e) 
-		{
-			JOptionPane.showMessageDialog(null, "IO Error: " + url);
+			if(!rule.startsWith("%"))
+			{
+				// skip to the next line if we're on a comment
+				grammarRules.add(rule);
+			}
 		}
 	}
 }
