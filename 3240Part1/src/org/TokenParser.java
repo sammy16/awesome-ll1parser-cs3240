@@ -1,5 +1,6 @@
 package org;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -18,6 +19,10 @@ public class TokenParser {
 	
 	public TokenParser(ArrayList<Token> tokens) {
 		this.input = tokens;
+		TokenParserTableFactory fact = new TokenParserTableFactory();
+		String location = "/org/resources/tiny.txt";
+		URL trueLocation = this.getClass().getResource(location);
+		fact.LoadURL(trueLocation);
 	}
 	
 	public void algorithm() {
