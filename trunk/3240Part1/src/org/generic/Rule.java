@@ -29,4 +29,14 @@ public class Rule {
 		
 		return left.toString() + ":" + right.toString(); 
 	}
+	
+	public Nonterminal getLeft()
+	{
+		return left;
+	}
+	
+	public ArrayList<Symbol> getRight()
+	{
+		return right;
+	}
 }

@@ -10,8 +10,8 @@ import org.generic.*;
  */
 public class TokenParserTable {
 	
-	public void getEntry(Nonterminal nt, Token t)
+	public Rule getEntry(Nonterminal nt, Token t)
 	{
-		
+		return null;
 	}
 }
