@@ -6,16 +6,15 @@ package org.generic;
  * @author Andrew Guyton
  * @date 2010/18/4
  */
-public class Nonterminal {
-	private String content;
+public class Nonterminal extends Symbol {
 	
 	public Nonterminal(String c)
 	{
-		content = c;
+		name = c;
 	}
 	
 	public String toString()
 	{
-		return content;
+		return name;
 	}
 }

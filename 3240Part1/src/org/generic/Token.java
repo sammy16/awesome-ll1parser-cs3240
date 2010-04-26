@@ -6,17 +6,17 @@ package org.generic;
  * @author Elizabeth White
  * @date 2010/18/4
  */
-public class Token {
+public class Token extends Symbol {
 	private Kind kind;
 	private int nval;
-	private String sval;
+	//private String name;
 	/**
 	 * This method constructs this class
 	 */
 	public Token(Kind k) { 
 		kind = k; 
 		nval = 0;
-		sval = null;
+		name = null;
 	}
 	/**
 	 * This method constructs this class if the Token is an INTNUM
@@ -24,7 +24,7 @@ public class Token {
 	public Token(int n) { 
 		kind = Kind.INTNUM;
 		nval = n;
-		sval = null;
+		name = null;
 	}
 	/**
 	 * This method constructs this class if the Token is an ID
@@ -32,7 +32,7 @@ public class Token {
 	public Token(String s) { 
 		kind = Kind.ID;
 		nval = 0;
-		sval = s;
+		name = s;
 	}
 	/**
 	 * This method constructs this class if the Token is an unknown/ERROR
@@ -40,7 +40,7 @@ public class Token {
 	public Token() {
 		kind = Kind.ERROR;
 		nval = 0;
-		sval = null;
+		name = null;
 	}
 	/**
 	 * This method returns the String of the Token based on it's Kind
@@ -84,7 +84,7 @@ public class Token {
 			return "%";
 		}
 		else if ( kind == Kind.ID ) {
-			return sval;
+			return name;
 		}
 		else if ( kind == Kind.READ ) {
 			return "READ";

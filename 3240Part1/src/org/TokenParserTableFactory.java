@@ -12,9 +12,11 @@ import javax.swing.JOptionPane;
  * @date 2010/26/4
  */
 public class TokenParserTableFactory {
+	public TokenParserTable table;
+	
 	public TokenParserTableFactory()
 	{
-
+		table = new TokenParserTable();
 	}
 	
 	// reads a file that specifies the grammar of a language
@@ -24,7 +26,7 @@ public class TokenParserTableFactory {
 		try
 		{
 			buffer = new BufferedReader(new FileReader(filename));
-			ParseFile(buffer);
+			parseFile(buffer);
 		} catch(FileNotFoundException e)
 		{
 			JOptionPane.showMessageDialog(null, "File not found: " + filename);
@@ -40,7 +42,7 @@ public class TokenParserTableFactory {
 		{
 			ins = new InputStreamReader(url.openStream());
 			buffer = new BufferedReader(ins);
-			ParseFile(buffer);
+			parseFile(buffer);
 		} catch(FileNotFoundException e)
 		{
 			JOptionPane.showMessageDialog(null, "File not found: " + url);
@@ -52,7 +54,7 @@ public class TokenParserTableFactory {
 	
 	// reads in lines until it finds one such non-blank line
 	// allows for some flexibility in the file format
-	public String readLine(BufferedReader buffer)
+	private String readLine(BufferedReader buffer)
 	{
 		String value = "";
         do
@@ -72,7 +74,8 @@ public class TokenParserTableFactory {
         return value;
 	}
 	
-	public void ParseFile(BufferedReader buffer)
+	// specifies how to parse the file
+	private void parseFile(BufferedReader buffer)
 	{
 		// read in the tokens and nonterminals and store them appropriately
 		String tokens = readLine(buffer);
@@ -94,5 +97,24 @@ public class TokenParserTableFactory {
 				grammarRules.add(rule);
 			}
 		}
+		
+		// fix them by removing left recursion and common prefix
+		ArrayList<String> rules;
+		rules = removeLeftRecursion(grammarRules);
+		rules = removeCommonPrefix(rules);
+		
+		// add the rules to the parse table now?
+	}
+	
+	// magical function that removes left recursion
+	private ArrayList<String> removeLeftRecursion(ArrayList<String> rules)
+	{
+		return null;
+	}
+	
+	// magical function that removes common prefixes
+	private ArrayList<String> removeCommonPrefix(ArrayList<String> rules)
+	{
+		return null;
 	}
 }

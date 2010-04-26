@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import org.generic.Kind;
+import org.generic.Nonterminal;
+import org.generic.Symbol;
 import org.generic.Token;
 /**
  * Parses a list of tokens based on the TokenParserTable.
@@ -14,7 +16,7 @@ import org.generic.Token;
  */
 public class TokenParser {
 	private ArrayList<Token> input = new ArrayList<Token>();
-	private Stack<Token> stack = new Stack<Token>();
+	private Stack<Symbol> stack = new Stack<Symbol>();
 	private TokenParserTable parsingTable;
 	
 	public TokenParser(ArrayList<Token> tokens) {
@@ -48,15 +50,14 @@ public class TokenParser {
 				}
 			}
 //			// [Case 2]: Top of stack is non-terminal
-//			else if ( stack.peek() instanceof Nonterminal) {
+			else if ( stack.peek() instanceof Nonterminal) {
 //				ProductionRule rule = parsingTable.getEntry( (Nonterminal)stack.peek(), input.get(i) );
 //				if(rule == null) break;
 //				stack.pop();
 //				ArrayList<Token> symbols = rule.getRule();
 //				for ( int k = symbols.size() - 1 ; k >= 0 ; k-- ) {
 //					stack.push(symbols.get(k));
-//				}
-//			}
+				}
 		}
 		if (stack.peek().equals(new Token(Kind.DOLLAR)) && count == input.size() - 1) {
 			System.out.println("TokenParser: Successful parse");
