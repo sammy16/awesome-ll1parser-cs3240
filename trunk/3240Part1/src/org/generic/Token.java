@@ -150,4 +150,9 @@ public class Token extends Symbol {
 			return kind.toString();
 		}
 	}
+	
+	public boolean equals(Token s)
+	{
+		return s.kind.equals(kind);
+	}
 }
