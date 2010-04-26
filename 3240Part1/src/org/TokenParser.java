@@ -53,7 +53,7 @@ public class TokenParser {
 			}
 //			// [Case 2]: Top of stack is non-terminal
 			else if ( stack.peek() instanceof Nonterminal) {
-				Rule r = table.getEntry( (Nonterminal)stack.peek(), input.get(count) );
+				Rule r = table.getRule( (Nonterminal)stack.peek(), input.get(count) );
 				if(r == null) 
 				{
 					break;

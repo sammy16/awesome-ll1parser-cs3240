@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import org.generic.Token;
+
 /**
  * Helps create the parser table based on inputed grammar rules.
  * 
@@ -57,20 +59,28 @@ public class TokenParserTableFactory {
 	private String readLine(BufferedReader buffer)
 	{
 		String value = "";
-        do
-        {
-        	try
-        	{
-        		value = buffer.readLine();
-        	}
-        	catch(IOException e)
-        	{
-        		value = null;
-        		break;
-        	}
-        }
-        while (value.trim().equals(""));
+		
+		// try to read a non-blank line
+		try
+		{
+	        do
+	        {
+	        	value = buffer.readLine();
+	        }
+	        while (value.trim().equals(""));
+		}
+		catch(IOException e)
+		{
+			// can't read
+			return null;
+		}
+		catch(NullPointerException e)
+		{
+			// trimming a null
+			return null;
+		}
         
+		// return the line
         return value;
 	}
 	
@@ -79,6 +89,13 @@ public class TokenParserTableFactory {
 	{
 		// read in the tokens and nonterminals and store them appropriately
 		String tokens = readLine(buffer);
+		ArrayList<Token> tok = new ArrayList<Token>();
+		String[] temp = tokens.split(" ");
+		for(int i=0; i<temp.length; i++)
+		{
+			
+		}
+		
 		String nonterminals = readLine(buffer);
 		
 		// read in the start symbol
