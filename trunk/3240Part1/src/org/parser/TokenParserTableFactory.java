@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import org.generic.Token;
+import org.generic.*;
 
 /**
  * Helps create the parser table based on inputed grammar rules.
@@ -93,14 +93,26 @@ public class TokenParserTableFactory {
 		String[] temp = tokens.split(" ");
 		for(int i=0; i<temp.length; i++)
 		{
-			
+			Token t = new Token();
+			t.TokenParse(temp[i]);
+			tok.add(t);
 		}
+		table.setTokens(tok);
 		
 		String nonterminals = readLine(buffer);
+		ArrayList<Nonterminal> nont = new ArrayList<Nonterminal>();
+		String[] temp2 = nonterminals.split(" ");
+		for(int i=0; i<temp2.length; i++)
+		{
+			Nonterminal n = new Nonterminal(temp2[i]);
+			nont.add(n);
+		}
+		table.setNonterminals(nont);
 		
 		// read in the start symbol
 		String startSymbol = readLine(buffer);
 		startSymbol = startSymbol.substring(6);
+		table.setStartSymbol(new Nonterminal(startSymbol));
 		System.out.println("Start symbol:" + startSymbol);
 		
 		// read in the grammar rules

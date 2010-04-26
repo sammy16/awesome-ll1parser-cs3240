@@ -3,8 +3,8 @@ package org;
 import java.util.ArrayList;
 
 import org.generic.Token;
-import org.parser.TokenParser;
-import org.parser.TokenScanner;
+import org.parser.*;
+
 /**
  * The main class for the LL(1) parser generator for CS 3240 Project.
  * 
