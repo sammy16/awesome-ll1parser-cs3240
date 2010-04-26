@@ -1,8 +1,9 @@
-package org;
+package org.parser;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Stack;
+
 import org.generic.*;
 /**
  * Parses a list of tokens based on the TokenParserTable.
@@ -32,7 +33,7 @@ public class TokenParser {
 	public void algorithm() {
 		int count = 0;
 		stack.push(new Token(Kind.DOLLAR));
-		//stack.push(new Nonterminal(parsingTable.getStartSymbol().getName()));
+		stack.push(new Nonterminal(table.getStartSymbol().getName()));
 		while( !stack.peek().equals(new Token(Kind.DOLLAR)) && count < input.size() ) {
 			//System.out.println("Current token: " + input.get(count));
 			//System.out.println("Current stack: " + stack);
@@ -51,7 +52,7 @@ public class TokenParser {
 					}
 				}
 			}
-//			// [Case 2]: Top of stack is non-terminal
+			// [Case 2]: Top of stack is non-terminal
 			else if ( stack.peek() instanceof Nonterminal) {
 				Rule r = table.getRule( (Nonterminal)stack.peek(), input.get(count) );
 				if(r == null) 

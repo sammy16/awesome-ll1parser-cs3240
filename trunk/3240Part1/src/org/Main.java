@@ -3,6 +3,8 @@ package org;
 import java.util.ArrayList;
 
 import org.generic.Token;
+import org.parser.TokenParser;
+import org.parser.TokenScanner;
 /**
  * The main class for the LL(1) parser generator for CS 3240 Project.
  * 
@@ -16,10 +18,10 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		String input = "begin a := a + b; end";
-		System.out.println(input);
+		System.out.println("Input: " + input);
 		TokenScanner ts = new TokenScanner(input);
 		ArrayList<Token> answer = ts.getTokens();
-		System.out.println(answer.toString());
+		System.out.println("Input Tokens: " + answer.toString());
 		TokenParser parser = new TokenParser(answer);
 		parser.algorithm();
 	}

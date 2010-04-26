@@ -1,4 +1,4 @@
-package org;
+package org.parser;
 
 import java.util.*;
 import org.generic.*;
@@ -35,5 +35,9 @@ public class TokenParserTable {
 	public Rule getRule(Nonterminal nt, Token t)
 	{
 		return table[tokens.indexOf(t)][nonterminals.indexOf(nt)].get(nt + "," + t).get(0);
+	}
+	
+	public Symbol getStartSymbol() {
+		return null;
 	}
 }
