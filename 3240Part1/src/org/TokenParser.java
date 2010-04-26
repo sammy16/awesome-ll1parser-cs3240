@@ -3,11 +3,7 @@ package org;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Stack;
-
-import org.generic.Kind;
-import org.generic.Nonterminal;
-import org.generic.Symbol;
-import org.generic.Token;
+import org.generic.*;
 /**
  * Parses a list of tokens based on the TokenParserTable.
  * 
@@ -17,14 +13,20 @@ import org.generic.Token;
 public class TokenParser {
 	private ArrayList<Token> input = new ArrayList<Token>();
 	private Stack<Symbol> stack = new Stack<Symbol>();
-	private TokenParserTable parsingTable;
+	private TokenParserTable table;
 	
-	public TokenParser(ArrayList<Token> tokens) {
-		this.input = tokens;
-		TokenParserTableFactory fact = new TokenParserTableFactory();
+	public TokenParser(ArrayList<Token> t) {
+		// tokens from constructor
+		input = t;
+		
+		// parse the language definition into a parsing table
+		TokenParserTableFactory factory = new TokenParserTableFactory();
 		String location = "/org/resources/tiny.txt";
 		URL trueLocation = this.getClass().getResource(location);
-		fact.LoadURL(trueLocation);
+		factory.LoadURL(trueLocation);
+		
+		// get the parsing table from the factory
+		table = factory.getParsingTable();
 	}
 	
 	public void algorithm() {
@@ -51,13 +53,17 @@ public class TokenParser {
 			}
 //			// [Case 2]: Top of stack is non-terminal
 			else if ( stack.peek() instanceof Nonterminal) {
-//				ProductionRule rule = parsingTable.getEntry( (Nonterminal)stack.peek(), input.get(i) );
-//				if(rule == null) break;
-//				stack.pop();
-//				ArrayList<Token> symbols = rule.getRule();
-//				for ( int k = symbols.size() - 1 ; k >= 0 ; k-- ) {
-//					stack.push(symbols.get(k));
+				Rule r = table.getEntry( (Nonterminal)stack.peek(), input.get(count) );
+				if(r == null) 
+				{
+					break;
 				}
+				stack.pop();
+				ArrayList<Symbol> symbols = r.getRight();
+				for (int k = (symbols.size() - 1); k >= 0; k--) {
+					stack.push(symbols.get(k));
+				}
+			}
 		}
 		if (stack.peek().equals(new Token(Kind.DOLLAR)) && count == input.size() - 1) {
 			System.out.println("TokenParser: Successful parse");
@@ -67,5 +73,4 @@ public class TokenParser {
 			System.out.println("Current stack (Error): " + stack);
 		}
 	}
-	
 }

@@ -117,4 +117,9 @@ public class TokenParserTableFactory {
 	{
 		return null;
 	}
+	
+	public TokenParserTable getParsingTable()
+	{
+		return table;
+	}
 }
