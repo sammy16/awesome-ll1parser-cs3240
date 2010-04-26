@@ -48,6 +48,14 @@ public class Token extends Symbol {
 		name = null;
 	}
 	
+	/*
+	 * This method attempts to construct a token from a string
+	 */
+	public Token(String s, int n)
+	{
+		TokenParse(s);
+	}
+	
 	/**
 	 * This method sets the kind according to a string that is passed in
 	 */

@@ -145,7 +145,10 @@ public class TokenParserTableFactory {
 		// add the rules to the parse table now?
 	}
 	
-	// converts a string to a rule that we understand
+	/*
+	 * converts a string to a rule (or rules, in the case of A -> B | C )
+	 * that we understand and can use to manipulate symbols
+	 */
 	public ArrayList<Rule> getRules(String rawRule)
 	{
 		ArrayList<Rule> result = new ArrayList<Rule>();
@@ -158,9 +161,32 @@ public class TokenParserTableFactory {
 		String rightarr[] = right.split("\\|", -1);
 		for(int i=0; i<rightarr.length; i++)
 		{
-			String thisrule = rightarr[i].trim();
+			String looprule = rightarr[i].trim();
+			ArrayList<Symbol> loopsymbols = new ArrayList<Symbol>();
+			if(looprule.equals(""))
+			{
+				// empty rule --> add epsilon
+				loopsymbols.add(new Token(Kind.EPSILON));
+			}
+			else
+			{
+				// non-empty rule: add ArrayList of symbols
+				String symbols[] = looprule.split(" ");
+				for(int j=0; j<symbols.length; j++)
+				{
+					String subrule = symbols[j].trim();
+					if(table.tokens.contains(new Token(subrule, 0)))
+					{
+						loopsymbols.add(new Token(subrule, 0));
+					}
+					else if(table.tokens.contains(new Nonterminal(subrule)))
+					{
+						loopsymbols.add(new Nonterminal(subrule));
+					}
+				}
+			}
 			
-			
+			result.add(new Rule(n, loopsymbols));
 		}
 		
 		return result;
@@ -172,6 +198,7 @@ public class TokenParserTableFactory {
 	 */
 	private HashMap<Nonterminal, ArrayList<Rule>> removeLeftRecursion(ArrayList<String> rawRules)
 	{	
+		// iterate through each line and add any rules you find
 		ArrayList<Rule> rules = new ArrayList<Rule>();
 		for(String lineRule : rawRules)
 		{
