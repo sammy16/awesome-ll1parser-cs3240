@@ -9,14 +9,27 @@ package org.generic;
 public class Symbol {
 	// name of the symbol
 	protected String name;
+	
 	/**
 	 * Returns true if both symbols are identically-named
 	 * @param Symbol symbol were comparing this to
 	 */
 	public boolean equals(Symbol s)
 	{
-		return s.name.equals(name);
+		if(s.name == null && name == null)
+		{
+			return true;
+		}
+		else if(s.name == null || name == null)
+		{
+			return false;
+		}
+		else
+		{
+			return s.name.equals(name);
+		}
 	}
+	
 	/**
 	 * Returns the symbol's name
 	 * @return name of the Symbol
