@@ -15,6 +15,7 @@ public class TokenParserTable {
 	public HashMap<String,ArrayList<Rule>>[][] table;
 	public ArrayList<Token> tokens;
 	public ArrayList<Nonterminal> nonterminals;
+	public Nonterminal startSymbol;
 	
 	public void setTokens(ArrayList<Token> tok)
 	{
@@ -34,10 +35,25 @@ public class TokenParserTable {
 	
 	public Rule getRule(Nonterminal nt, Token t)
 	{
-		return table[tokens.indexOf(t)][nonterminals.indexOf(nt)].get(nt + "," + t).get(0);
+		try
+		{
+			// try to find a rule that corresponds to these symbols
+			return table[tokens.indexOf(t)][nonterminals.indexOf(nt)].get(nt + "," + t).get(0);
+		}
+		catch(NullPointerException e)
+		{
+			// can't find a rule like that
+			return null;
+		}
 	}
 	
-	public Symbol getStartSymbol() {
-		return null;
+	public void setStartSymbol(Nonterminal start)
+	{
+		startSymbol = start; 
+	}
+	
+	public Nonterminal getStartSymbol() 
+	{
+		return startSymbol;
 	}
 }

@@ -15,4 +15,9 @@ public class Nonterminal extends Symbol {
 	{
 		name = c;
 	}
+	
+	public String toString()
+	{
+		return name;
+	}
 }
