@@ -40,7 +40,7 @@ public class ParsingTable {
 				table[j][i] = new HashMap<String,ArrayList<Rule>>();
 				String nonTname = nonterminals.get(j).getName();
 				//System.out.println("Tokens size: " + tokens.size());
-				Token tokra = tokens.get(i);
+				//Token tokra = tokens.get(i);
 				String tokName = tokens.get(i).getName();
 				String key = nonTname + "," + tokName;
 				table[j][i].put(key, new ArrayList<Rule>());
@@ -78,7 +78,8 @@ public class ParsingTable {
 			// find the symbols in the vars
 			for(int i=0; i<gTokens.size(); i++)
 			{
-				if(gTokens.get(i).equals(token))
+				Token tok = gTokens.get(i);
+				if(tok.equals(token))
 				{
 					x = i;
 					break;

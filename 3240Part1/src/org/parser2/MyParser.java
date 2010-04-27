@@ -38,11 +38,11 @@ public class MyParser {
 		// Validate the grammar rules
 		GrammarConverter gc = new GrammarConverter(gs.getRawRules(), gNonterminals, gTokens);
 		gRules = gc.convertRawRules();
-		//printGrammarRules(gRules);
+		printGrammarRules(gRules);
 		
 		// Build the parsing table
 		ptb = new ParsingTableBuilder(gTokens, gNonterminals, gStartSymbol, gRules);
-		//printHTMLTable(ptb.getTable());
+		printHTMLTable(ptb.getTable());
 		
 		//Computer input based on parsing table
 	}
@@ -55,8 +55,8 @@ public class MyParser {
 		Symbol nta = ptb.getStartSymbol();
 		stack.push(new Nonterminal(nta.getName()));
 		while( !stack.peek().equals(new Token("$")) && count < input.size() ) {
-			//System.out.println("Current token: " + input.get(count));
-			//System.out.println("Current stack: " + stack);
+			System.out.println("Current token: " + input.get(count));
+			System.out.println("Current stack: " + stack);
 			// [Case 1]: Top of stack is a token
 			if( stack.peek() instanceof Token) {
 				if(stack.peek().equals(new Token(Kind.EPSILON))) {
@@ -68,6 +68,7 @@ public class MyParser {
 					Token tokpeek = (Token)stack.peek(); 
 					if(tokpeek.equals(tokinput)) 
 					{
+						System.out.println("Popping off the stack: " + tokpeek);
 						stack.pop();
 						count++;
 					}
@@ -79,11 +80,11 @@ public class MyParser {
 			// [Case 2]: Top of stack is non-terminal
 			else if ( stack.peek() instanceof Nonterminal) 
 			{
-				Nonterminal nontnext = (Nonterminal)stack.peek();
-				Token mytoken = input.get(count);
-				System.out.println(nontnext + ", " + mytoken);
+				Nonterminal nextNonTerm = (Nonterminal)stack.peek();
+				Token nextToken = input.get(count);
+				System.out.println(nextNonTerm + ", " + nextToken);
 				
-				Rule r = ptb.getTable().getRule( (Nonterminal)stack.peek(), input.get(count) );
+				Rule r = ptb.getTable().getRule( nextNonTerm, nextToken );
 				System.out.println("Rule: " + r);
 				if(r == null) 
 				{
@@ -91,7 +92,8 @@ public class MyParser {
 				}
 				stack.pop();
 				ArrayList<Symbol> symbols = r.getRight();
-				for (int k = (symbols.size() - 1); k >= 0; k--) {
+				for (int k = (symbols.size() - 1); k >= 0; k--) 
+				{
 					stack.push(symbols.get(k));
 				}
 			}
