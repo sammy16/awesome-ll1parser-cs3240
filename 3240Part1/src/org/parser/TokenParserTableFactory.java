@@ -214,9 +214,10 @@ public class TokenParserTableFactory {
 		ArrayList<Rule> newRulesList = new ArrayList<Rule>();
 		int i = 0;
 		
-		while(i<rules.size()){
+		while(i<rules.size())
+		{
 			nontermrule = rules.get(i).getLeft();
-			while(rules.get(i).getLeft().equals(nontermrule.getName())){
+			while(rules.get(i).getLeft().getName().equals(nontermrule.getName())){
 				newRulesList.add(rules.get(i));
 				i++;
 				
@@ -268,20 +269,24 @@ public class TokenParserTableFactory {
 			}
 		}
 		
-		
-		
 		return rulesMap;
 	}
 	
     private boolean NonterminalHasLeftRecursion(Nonterminal nonterm, ArrayList<Rule> sameRules) {
         boolean hasLeftRecursion = false;
-                for(Rule rule : sameRules) {
-                    Symbol left = rule.getRight().get(0);
-                    if(left.equals(nonterm)) {         
-                        hasLeftRecursion = true;                        
-                    }
-                }
-                return hasLeftRecursion;
+        for(Rule rule : sameRules) 
+        {
+        	ArrayList<Symbol> rightrules = rule.getRight();
+        	if(rightrules.size()>0)
+        	{
+        		Symbol left = rightrules.get(0);
+        		if(left.equals(nonterm)) 
+        		{         
+        			hasLeftRecursion = true;                        
+        		}
+        	}
+        }
+        return hasLeftRecursion;       
     }
 	
 	// magical function that removes common prefixes
