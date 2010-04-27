@@ -43,6 +43,7 @@ public class TokenParserTable {
 		catch(NullPointerException e)
 		{
 			// can't find a rule like that
+			System.out.println("Can't find rule for " + nt + " -> " + t);
 			return null;
 		}
 	}
