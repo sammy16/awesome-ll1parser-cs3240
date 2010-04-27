@@ -230,7 +230,7 @@ public class GrammarConverter {
                 	   if(t.equals(new Token(sym,1)))
                 	   {
                 		   //System.out.println("FUCK YEAH A TOKEN");
-                		   rSideSyms.add(new Token(sym));
+                		   rSideSyms.add(new Token(sym,1));
                 		   break;
                 	   }
                    }
