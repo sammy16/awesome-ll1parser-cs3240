@@ -50,8 +50,10 @@ public class Token extends Symbol {
 		nval = 0;
 	}
 	
-	/*
+	/**
 	 * This method attempts to construct a token from a string
+	 * @param String s string the token is contructed from
+	 * @param int throwaway param (IT HAS NO POINT!)
 	 */
 	public Token(String s, int n)
 	{
@@ -165,7 +167,11 @@ public class Token extends Symbol {
 			return kind.toString();
 		}
 	}
-	
+	/**
+	 * This method returns whether this Token matches the given Token
+	 * @param Token s Token to compare this Token to
+	 * @return boolean
+	 */
 	public boolean equals(Token s)
 	{
 		//System.out.println(s.kind + ", " + this.kind);
@@ -183,7 +189,10 @@ public class Token extends Symbol {
 			return s.kind.equals(this.kind);
 		}
 	}
-	
+	/**
+	 * This method returns what kind of Token this is
+	 * @return Kind
+	 */
 	public Kind getKind() {
 		return this.kind;
 	}
