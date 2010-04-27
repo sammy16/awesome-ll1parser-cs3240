@@ -8,6 +8,7 @@ package org.generic;
  */
 public class Token extends Symbol {
 	private Kind kind;
+	@SuppressWarnings("unused")
 	private int nval;
 	
 	//private String name;

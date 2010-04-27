@@ -16,7 +16,6 @@ public class ParsingTableBuilder {
 	private ParsingTable table;
 	
 	private ArrayList<Nonterminal> gNonterminals;
-    //private ArrayList<Token> gTokens;
     private Symbol gStartSymbol;
     private HashMap<Nonterminal, ArrayList<Rule>> gRules;
 	
