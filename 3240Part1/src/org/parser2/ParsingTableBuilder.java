@@ -24,34 +24,26 @@ public class ParsingTableBuilder {
 	@SuppressWarnings("unchecked")
 	public ParsingTableBuilder(ArrayList<Token> tokens, ArrayList<Nonterminal> nonterminals, Symbol startSymbol, HashMap<Nonterminal, ArrayList<Rule>> rules) {
 		gNonterminals = nonterminals;
-		//gTokens = tokens;
 		gStartSymbol = startSymbol;
 		gRules = rules;
 		
-		 // compute first() sets
 		HashMap<Nonterminal, ArrayList<Token>> firstSets = computeFirstSets();
 	    
-	    // compute follow() sets
 		HashMap<Nonterminal, ArrayList<Token>> followSets = computeFollowSets(firstSets);
 	    
-	    // compute predict() sets using first() and follow() sets
 	    predictSets = computePredictSets(followSets,firstSets);
 	    
-	    // initialize new ParsingTable
 	    table = new ParsingTable(tokens.size(),nonterminals.size(),tokens,nonterminals, startSymbol);
 	    
-	    //iterator for the rules of the predict set
 	    Collection ruls = predictSets.keySet();
 	    Iterator r = ruls.iterator();
 	    
-	    // iterate through [rule, predict_set] key-value pairs in hashtable
 	    Rule nonT;
 	    ArrayList<Token> tks;
 	    while(r.hasNext())
 	    {
 	        nonT = (Rule)r.next();
-	        tks = predictSets.get(nonT);   //list of tokens for each rule
-	        // iterate through tokens of predict set and add entry in parse table for the production rule
+	        tks = predictSets.get(nonT);
 	        for(Token t: tks)
 	        {
 	            table.addRule(nonT.getLeft(), t, nonT);
@@ -77,13 +69,10 @@ public class ParsingTableBuilder {
         return firstSetsLocal;
     }
     
-	// Compute Follow sets for all nonterminals
     private HashMap<Nonterminal, ArrayList<Token>> computeFollowSets(HashMap<Nonterminal, ArrayList<Token>> firstSets)
     {
         HashMap<Nonterminal, ArrayList<Token>> followSetsLocal = new HashMap<Nonterminal, ArrayList<Token>>();
         
-        // initialize follow sets here
-        // follow(startSymbol) = {$}, and the rest are empty
         for (Nonterminal N : gNonterminals) {
             if (N.getName().equals(gStartSymbol.getName())) {
                 ArrayList<Token> temp = new ArrayList<Token>();
@@ -95,12 +84,8 @@ public class ParsingTableBuilder {
             }
         }
         
-        //ArrayList<Token> ret = new ArrayList<Token>();
-        
-        // we keep track of whether any changes are made to the follow sets during each pass
-        // when no changes have been made, we're at stasis and we terminate
+      
         boolean changed = true;
-        // while the follow sets are still "active" (changing), keep making passes
         while (changed) {
             changed = false;
             for (Nonterminal N : gNonterminals) 
@@ -122,7 +107,6 @@ public class ParsingTableBuilder {
 	                            if (allNullable(prodend, firstSets)) 
 	                            {
 	                                ArrayList<Token> nFollow = followSetsLocal.get(N);
-	                                // add N follow set to X follow set; check for changes
 	                                boolean changed2 = false;
 	                                for (Token T : nFollow) 
 	                                {
@@ -134,10 +118,8 @@ public class ParsingTableBuilder {
 	                                }
 	                                changed = changed || changed2;
 	                            }
-	                            // first set
 	                            ArrayList<Symbol> followSymbols = new ArrayList<Symbol>(prodelements.subList(i+1, k));
 	                            ArrayList<Token> first = first(followSymbols, firstSets);
-	                            // add first set to xFollow; check for changes
 	                            boolean changed3 = false;
 	                            for (Token T : first) 
 	                            {
@@ -149,7 +131,7 @@ public class ParsingTableBuilder {
 	                            }
 	                            changed = changed || changed3;
 	                            followSetsLocal.put(X, xFollow);
-	                        }//end if
+	                        }
 	                    }
 	                }
             	}
@@ -158,7 +140,7 @@ public class ParsingTableBuilder {
         return followSetsLocal;
     }
     
-    // page 178 Louden
+    //from louden 178
     private HashMap<Rule, ArrayList<Token>> computePredictSets(
     		HashMap<Nonterminal, ArrayList<Token>> followSets , 
     		HashMap<Nonterminal, ArrayList<Token>> firstSets) 
@@ -176,24 +158,19 @@ public class ParsingTableBuilder {
             	gNonterminals.add(key);
         }
         
-        // we compute the predict set for each production rule in the grammar
         for (Rule P : rules) {
             ArrayList<Token> temp = new ArrayList<Token>();
             
             Nonterminal A = P.getLeft();
             ArrayList<Symbol> alpha = P.getRight();
-            // to start, we get the first set of the right-hand side
             ArrayList<Token> first = first(alpha, firstSets);
             for (Token T : first)
                 temp.add(T);
             
-            // if that first set contains alpha, then we also add the follow
-            // set to the predict set.
             if (first.contains(new Token("EPSILON"))) {
                 for (Token T : followSets.get(A))
                     temp.add(T);
             }
-            // hash it up!
             predictSetsLocal.put(P, temp);
         }
         
@@ -202,8 +179,6 @@ public class ParsingTableBuilder {
     
     
     
-    // a symbol string is nullable if the whole thing can through some
-    // series of productions be mapped to epsilon
     private boolean allNullable(ArrayList<Symbol> symbols, HashMap<Nonterminal, ArrayList<Token>> firstSets) 
     {
         for (Symbol S : symbols) 
@@ -220,7 +195,6 @@ public class ParsingTableBuilder {
     }
     
     private ArrayList<Token> first(Symbol S) {
-        // S is any terminal (which includes epsilon)
         if (S instanceof Token) {
             ArrayList<Token> singleton = new ArrayList<Token>();
             singleton.add((Token)S);
@@ -228,20 +202,13 @@ public class ParsingTableBuilder {
         }
         
         HashSet<Token> ret = new HashSet<Token>();
-        // okay, so it's a nonterminal
-        // iterate through each rule for this nonterminal
         if(gRules.get(S) != null)
         {
 	        for (Rule R : gRules.get((Nonterminal)S)) {
-	            // okay, we are on a particular rule
 	            ArrayList<Symbol> symbols = R.getRight();
 	            boolean hasEpsilon = false;
-	            // now, for each symbol in that rule sequence...
 	            for (Symbol X_i : symbols) {
 	                hasEpsilon = false;
-	                // we add the First set the current symbol
-	                // if that First set contains epsilon, we note that, so that
-	                // we can get the First set of the NEXT symbol, too.
 	                for (Token T : first(X_i)) {
 	                    if (T.getName().equals("EPSILON"))
 	                        hasEpsilon = true;
@@ -251,9 +218,7 @@ public class ParsingTableBuilder {
 	                if (!hasEpsilon)
 	                    break;
 	            }
-	            // if hasEpsilon is true, this implies that every symbol in the
-	            // sequence had epsilon in its First set, and so the First set
-	            // for the whole rule must contain epsilon, as well.
+	            
 	            if (hasEpsilon)
 	                ret.add(new Token("EPSILON"));
 	        }
@@ -265,29 +230,20 @@ public class ParsingTableBuilder {
 
     }
     
-    /**
-     * Louden page 168
-     * This method assumes computeFirstSets() has already been called,
-     * creating a cache of first(N) for each nonterminal.
-     * @param alpha
-     * @return
-     */
+    //from louden 168
     private ArrayList<Token> first(ArrayList<Symbol> alpha, HashMap<Nonterminal, ArrayList<Token>> firstSets) 
     {
         if (alpha.size() == 0) {   
             ArrayList<Token> temp = new ArrayList<Token>();
-            //temp.add(new Token("EPSILON"));
             return temp;
         }
        
-        // special case: alpha is a set containing only epsilon
         if (alpha.size() == 1 && alpha.contains(new Token("EPSILON"))) {
             ArrayList<Token> temp = new ArrayList<Token>();
             temp.add(new Token("EPSILON"));
             return temp;
         }
         
-       // we use a set so that duplicates are automatically ignored
        HashSet<Token> ret = new HashSet<Token>();
        ArrayList<Token> firstAlpha = first(alpha.get(0));
        ret.addAll(firstAlpha);
@@ -298,11 +254,9 @@ public class ParsingTableBuilder {
        while (hasEpsilon && i < alpha.size()) {
            ArrayList<Token> nextFirstSet = null;
            Symbol nextSymbol = alpha.get(i);
-           // if it's a nonterminal, it's already computed and cached
            if (nextSymbol instanceof Nonterminal) {
                nextFirstSet = firstSets.get((Nonterminal)nextSymbol);
            }
-           // if it's a terminal, it will be computed instantly anyway
            else
                nextFirstSet = first(nextSymbol);
            
@@ -314,7 +268,6 @@ public class ParsingTableBuilder {
            i++;
        }
        
-       //return removeDups(ret);
        ArrayList<Token> retAsList = new ArrayList<Token>();
        retAsList.addAll(ret);
        return retAsList;
