@@ -13,11 +13,6 @@ public class Nonterminal extends Symbol {
 	 */
 	public Nonterminal(String c)
 	{
-		name = c;
-	}
-	
-	public String toString()
-	{
-		return name;
+		super(c);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.generic.Token;
 import org.parser.*;
+import org.parser2.MyParser;
 
 /**
  * The main class for the LL(1) parser generator for CS 3240 Project.
@@ -21,8 +22,8 @@ public class Main {
 		System.out.println("Input: " + input);
 		TokenScanner ts = new TokenScanner(input);
 		ArrayList<Token> answer = ts.getTokens();
-		System.out.println("Input Tokens: " + answer.toString());
-		TokenParser parser = new TokenParser(answer);
+		//System.out.println("Input Tokens: " + answer.toString());
+		MyParser parser = new MyParser(answer, "/org/resources/tiny.txt");
 		parser.algorithm();
 	}
 }

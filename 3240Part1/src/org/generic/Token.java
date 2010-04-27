@@ -16,36 +16,36 @@ public class Token extends Symbol {
 	 * This method constructs this class
 	 */
 	public Token(Kind k) { 
+		super(null);
 		kind = k; 
 		nval = 0;
-		name = null;
 	}
 	
 	/**
 	 * This method constructs this class if the Token is an INTNUM
 	 */
 	public Token(int n) { 
+		super(null);
 		kind = Kind.INTNUM;
 		nval = n;
-		name = null;
 	}
 	
 	/**
 	 * This method constructs this class if the Token is an ID
 	 */
 	public Token(String s) { 
+		super(s);
 		kind = Kind.ID;
 		nval = 0;
-		name = s;
 	}
 	
 	/**
 	 * This method constructs this class if the Token is an unknown/ERROR
 	 */
 	public Token() {
+		super(null);
 		kind = Kind.ERROR;
 		nval = 0;
-		name = null;
 	}
 	
 	/*
@@ -53,6 +53,7 @@ public class Token extends Symbol {
 	 */
 	public Token(String s, int n)
 	{
+		super("");
 		TokenParse(s);
 	}
 	
@@ -165,6 +166,19 @@ public class Token extends Symbol {
 	
 	public boolean equals(Token s)
 	{
-		return s.kind.equals(kind);
+		//System.out.println(s.kind + ", " + this.kind);
+		
+		if(s.kind == null && this.kind == null)
+		{
+			return true;
+		}
+		else if(s.kind == null || this.kind == null)
+		{
+			return false;
+		}
+		else
+		{
+			return s.kind.equals(this.kind);
+		}
 	}
 }
