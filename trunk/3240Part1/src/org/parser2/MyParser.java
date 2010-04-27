@@ -62,8 +62,12 @@ public class MyParser {
 				if(stack.peek().equals(new Token(Kind.EPSILON))) {
 					stack.pop();
 				}
-				else {
-					if(stack.peek().equals(input.get(count))) {
+				else 
+				{
+					Token tokinput = input.get(count);
+					Token tokpeek = (Token)stack.peek(); 
+					if(tokpeek.equals(tokinput)) 
+					{
 						stack.pop();
 						count++;
 					}
