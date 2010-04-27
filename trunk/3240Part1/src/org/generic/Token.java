@@ -151,14 +151,14 @@ public class Token extends Symbol {
 	 */
 	public String toString() {
 		if ( kind == Kind.ID ) {
-			return name;
+			return kind.toString();
 		}
 		else if ( kind == Kind.DOLLAR)
 		{
 			return "$";
 		}
 		else if ( kind == Kind.INTNUM ) {
-			return Integer.toString(nval);
+			return kind.toString();
 		}
 		else {
 			return kind.toString();
@@ -181,5 +181,9 @@ public class Token extends Symbol {
 		{
 			return s.kind.equals(this.kind);
 		}
+	}
+	
+	public Kind getKind() {
+		return this.kind;
 	}
 }
