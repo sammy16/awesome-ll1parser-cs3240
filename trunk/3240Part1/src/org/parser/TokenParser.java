@@ -14,6 +14,8 @@ import org.generic.*;
 public class TokenParser {
 	private ArrayList<Token> input = new ArrayList<Token>();
 	private Stack<Symbol> stack = new Stack<Symbol>();
+	//private TokenParserTableFactory factory;
+	private ParserGenerator factory;
 	private TokenParserTable table;
 	
 	public TokenParser(ArrayList<Token> t) {
@@ -21,20 +23,33 @@ public class TokenParser {
 		input = t;
 		
 		// parse the language definition into a parsing table
-		TokenParserTableFactory factory = new TokenParserTableFactory();
+		//TokenParserTableFactory factory = new TokenParserTableFactory();
+		factory = new ParserGenerator();
 		String location = "/org/resources/tiny.txt";
 		URL trueLocation = this.getClass().getResource(location);
-		factory.LoadURL(trueLocation);
+		//String fullLocation = trueLocation.toExternalForm();
+		//System.out.println(fullLocation);
+		//factory.LoadURL(trueLocation);
+		try {
+			factory.feed(trueLocation);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		// get the parsing table from the factory
-		table = factory.getParsingTable();
+		table = factory.buildParsingTable();
+		table.printHTMLTable();
+		//table.toString();
 	}
 	
-	public void algorithm() {
+	public void algorithm() 
+	{
 		int count = 0;
-		stack.push(new Token(Kind.DOLLAR));
-		stack.push(new Nonterminal(table.getStartSymbol().getName()));
-		while( !stack.peek().equals(new Token(Kind.DOLLAR)) && count < input.size() ) {
+		stack.push(new Token("$"));
+		//Nonterminal nta = table.getStartSymbol();
+		Symbol nta = factory.getStartSymbol();
+		stack.push(new Nonterminal(nta.getName()));
+		while( !stack.peek().equals(new Token("$")) && count < input.size() ) {
 			//System.out.println("Current token: " + input.get(count));
 			//System.out.println("Current stack: " + stack);
 			// [Case 1]: Top of stack is a token
@@ -66,7 +81,7 @@ public class TokenParser {
 				}
 			}
 		}
-		if (stack.peek().equals(new Token(Kind.DOLLAR)) && count == input.size() - 1) {
+		if (stack.peek().equals(new Token("$")) && count == input.size() - 1) {
 			System.out.println("TokenParser: Successful parse");
 		} else {
 			System.out.println("TokenParser: Parsing error");
