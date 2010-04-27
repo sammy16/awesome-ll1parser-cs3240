@@ -72,8 +72,29 @@ public class ParsingTable {
 		System.out.println("Finding rule for: " + peek + ", " + token);
 		try 
 		{
-			int x = gTokens.indexOf(token);
-			int y = gNonterminals.indexOf(peek);
+			// default values
+			int x = -1;
+			int y = -1;
+			// find the symbols in the vars
+			for(int i=0; i<gTokens.size(); i++)
+			{
+				if(gTokens.get(i).equals(token))
+				{
+					x = i;
+					break;
+				}
+			}
+			for(int i=0; i<gNonterminals.size(); i++)
+			{
+				if(gNonterminals.get(i).equals(peek))
+				{
+					y = i;
+					break;
+				}
+				
+			}
+			//int x = gTokens.indexOf(token);
+			//int y = gNonterminals.indexOf(peek);
 			if( x == -1 || y == -1) 
 			{
 				return null;
