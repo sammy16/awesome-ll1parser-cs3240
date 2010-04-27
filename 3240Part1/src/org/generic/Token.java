@@ -151,6 +151,10 @@ public class Token extends Symbol {
 		if ( kind == Kind.ID ) {
 			return name;
 		}
+		else if ( kind == Kind.DOLLAR)
+		{
+			return "$";
+		}
 		else if ( kind == Kind.INTNUM ) {
 			return Integer.toString(nval);
 		}
