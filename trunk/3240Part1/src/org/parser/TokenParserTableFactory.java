@@ -111,9 +111,11 @@ public class TokenParserTableFactory {
 		// i=0 is %NONTERMINALS, skip it
 		for(int i=1; i<temp2.length; i++)
 		{
-			if(!temp2[i].trim().equals(""))
+			String substring = temp2[i].trim();
+			
+			if(!substring.equals(""))
 			{
-				Nonterminal n = new Nonterminal(temp2[i]);
+				Nonterminal n = new Nonterminal(substring);
 				nont.add(n);
 			}
 		}
@@ -121,9 +123,9 @@ public class TokenParserTableFactory {
 		
 		// read in the start symbol
 		String startSymbol = readLine(buffer);
-		startSymbol = startSymbol.substring(6);
+		startSymbol = startSymbol.split(" ")[1].trim();
 		table.setStartSymbol(new Nonterminal(startSymbol));
-		System.out.println("Start symbol:" + startSymbol);
+		System.out.println("Start symbol: " + startSymbol);
 		
 		// read in the grammar rules
 		String rule;
@@ -293,4 +295,3 @@ public class TokenParserTableFactory {
 		return table;
 	}
 }
-
