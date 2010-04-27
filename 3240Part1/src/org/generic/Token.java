@@ -18,6 +18,7 @@ public class Token extends Symbol {
 	public Token(Kind k) { 
 		super(null);
 		kind = k; 
+		name = kind.name();
 		nval = 0;
 	}
 	
