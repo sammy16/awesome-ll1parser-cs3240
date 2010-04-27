@@ -196,6 +196,7 @@ public class TokenParserTableFactory {
 	 * Removes instances of left recursion from the grammar; 
 	 * described on Louden p 158 
 	 */
+	@SuppressWarnings("unchecked")
 	private HashMap<Nonterminal, ArrayList<Rule>> removeLeftRecursion(ArrayList<String> rawRules)
 	{	
 		// iterate through each line and add any rules you find
@@ -206,8 +207,80 @@ public class TokenParserTableFactory {
 			rules.addAll(rule);
 		}
 		
-		return null;
+		HashMap<Nonterminal, ArrayList<Rule>> rulesMap = new HashMap<Nonterminal, ArrayList<Rule>>();
+		Nonterminal nontermrule;
+		ArrayList<Rule> newRulesList = new ArrayList<Rule>();
+		int i = 0;
+		
+		while(i<rules.size()){
+			nontermrule = rules.get(i).getLeft();
+			while(rules.get(i).getLeft().equals(nontermrule.getName())){
+				newRulesList.add(rules.get(i));
+				i++;
+				
+				if(i >= rules.size()){
+					break;
+				}
+				
+			}
+			rulesMap.put(nontermrule, newRulesList);
+		}
+		
+		ArrayList<Nonterminal> keyList = new ArrayList<Nonterminal>();
+		keyList.addAll(rulesMap.keySet());
+		for(Nonterminal key : keyList){
+			
+			ArrayList<Rule> sameRulesList = rulesMap.get(key);
+			boolean hasLeftRecursion = this.NonterminalHasLeftRecursion(key, sameRulesList);
+			
+			if (hasLeftRecursion) {
+                Nonterminal aPrime = new Nonterminal(key.getName() + "'");
+                
+                Rule aPrimeEpsilonRule = new Rule(aPrime, new ArrayList<Symbol>());
+                aPrimeEpsilonRule.getRight().add(new Token("EPSILON"));
+                
+                ArrayList<Rule> aPrimeRules = new ArrayList<Rule>();
+                aPrimeRules.add(aPrimeEpsilonRule);
+                
+                rulesMap.put(aPrime, aPrimeRules);
+                
+                for (Rule rule : ((ArrayList<Rule>) sameRulesList.clone())){                   
+                	Symbol startingSymbol = rule.getRight().get(0);
+	                if(startingSymbol.equals(key)) {
+                        sameRulesList.remove(rule);
+                        rule.getRight().remove(0);
+                        ArrayList<Symbol> newRule = new ArrayList<Symbol>();
+                        newRule.addAll(rule.getRight());
+                        newRule.add(aPrime);
+                        Rule newPrimeRule = new Rule(aPrime, newRule);
+                        aPrimeRules.add(newPrimeRule);
+                     } else {
+                        sameRulesList.remove(rule);
+                        ArrayList<Symbol> newRuleList = new ArrayList<Symbol>();
+                        newRuleList.addAll(rule.getRight());
+                        newRuleList.add(aPrime);
+                        Rule newARule = new Rule(key, newRuleList);
+                        sameRulesList.add(newARule);
+                     }
+                }
+			}
+		}
+		
+		
+		
+		return rulesMap;
 	}
+	
+    private boolean NonterminalHasLeftRecursion(Nonterminal nonterm, ArrayList<Rule> sameRules) {
+        boolean hasLeftRecursion = false;
+                for(Rule rule : sameRules) {
+                    Symbol left = rule.getRight().get(0);
+                    if(left.equals(nonterm)) {         
+                        hasLeftRecursion = true;                        
+                    }
+                }
+                return hasLeftRecursion;
+    }
 	
 	// magical function that removes common prefixes
 	private HashMap<Nonterminal, ArrayList<Rule>> removeCommonPrefix(HashMap<Nonterminal, ArrayList<Rule>> rules)
@@ -220,3 +293,4 @@ public class TokenParserTableFactory {
 		return table;
 	}
 }
+
