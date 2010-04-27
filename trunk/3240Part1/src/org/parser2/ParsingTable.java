@@ -13,7 +13,6 @@ public class ParsingTable {
 	
 	private ArrayList<Nonterminal> gNonterminals;
     private ArrayList<Token> gTokens;
-    //private Symbol gStartSymbol;	
 	
 	private int rows,columns;
 	
@@ -28,7 +27,6 @@ public class ParsingTable {
 		
 		gNonterminals = nonterminals;
 		gTokens = tokens;
-		//gStartSymbol = startSymbol;
 		
 		table = (HashMap<String,ArrayList<Rule>>[][]) new HashMap[columns][rows];
 		//System.out.println("Col: " + columns + " Rows: " + rows);
@@ -36,10 +34,8 @@ public class ParsingTable {
 		{
 			for(int j = 0; j < columns; j++)
 			{
-				//System.out.println("i: " + i + " j: " + j);
 				table[j][i] = new HashMap<String,ArrayList<Rule>>();
 				String nonTname = nonterminals.get(j).getName();
-				//System.out.println("Tokens size: " + tokens.size());
 				//Token tokra = tokens.get(i);
 				String tokName = tokens.get(i).getName();
 				String key = nonTname + "," + tokName;
@@ -72,10 +68,8 @@ public class ParsingTable {
 		System.out.println("Finding rule for: " + peek + ", " + token);
 		try 
 		{
-			// default values
 			int x = -1;
 			int y = -1;
-			// find the symbols in the vars
 			for(int i=0; i<gTokens.size(); i++)
 			{
 				Token tok = gTokens.get(i);
@@ -94,8 +88,6 @@ public class ParsingTable {
 				}
 				
 			}
-			//int x = gTokens.indexOf(token);
-			//int y = gNonterminals.indexOf(peek);
 			if( x == -1 || y == -1) 
 			{
 				return null;
