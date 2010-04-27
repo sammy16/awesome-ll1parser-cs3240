@@ -3,7 +3,7 @@ package org;
 import java.util.ArrayList;
 
 import org.generic.Token;
-import org.parser.*;
+import org.parser2.TokenScanner;
 import org.parser2.MyParser;
 
 /**
@@ -22,7 +22,7 @@ public class Main {
 		System.out.println("Input: " + input);
 		TokenScanner ts = new TokenScanner(input);
 		ArrayList<Token> answer = ts.getTokens();
-		//System.out.println("Input Tokens: " + answer.toString());
+		System.out.println("Input Tokens: " + answer.toString());
 		MyParser parser = new MyParser(answer, "/org/resources/tiny.txt");
 		parser.algorithm();
 	}

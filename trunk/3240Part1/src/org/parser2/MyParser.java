@@ -1,9 +1,5 @@
 package org.parser2;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -38,14 +34,18 @@ public class MyParser {
 		// Validate the grammar rules
 		GrammarConverter gc = new GrammarConverter(gs.getRawRules(), gNonterminals, gTokens);
 		gRules = gc.convertRawRules();
-		printGrammarRules(gRules);
+		//printGrammarRules(gRules);
 		
 		// Build the parsing table
 		ptb = new ParsingTableBuilder(gTokens, gNonterminals, gStartSymbol, gRules);
-		printHTMLTable(ptb.getTable());
+		//printTable(ptb.getTable());
 		
 		//Computer input based on parsing table
 	}
+	
+	/**
+	 * Based on Louden LL(1) parsing algorithm on page 155 
+	 */
 	public void algorithm() 
 	{
 		Stack<Symbol> stack = new Stack<Symbol>();
@@ -121,49 +121,4 @@ public class MyParser {
             }
         }
     }
-	
-	public void printHTMLTable(ParsingTable table)
-    {
-        System.out.println();
-        System.out.println("Writing parse table to file...");
-        try {
-            BufferedWriter html = new BufferedWriter(new FileWriter(new File("ptable.html")));
-            html.write("<table border=1>");
-            html.write("<tr><td>M[N,T]</td>");
-
-            for (Token T : gTokens) {
-                html.write("<td>" + T + "</td>");
-            }
-            html.write("</tr>");
-
-            for(int x=0;x<gNonterminals.size();x++) {
-                html.write("<tr>");
-                //first entry in the row is the row's nonterminal
-                html.write("<td>" + fixHTML(gNonterminals.get(x).toString()) + "</td>");
-
-
-                for(int y=0;y<gTokens.size();y++) {
-                    //print row of rules in coresponding location
-                    String rowRule = (table.getGrid())[x][y].get((table.getGrid())[x][y].keySet().toArray()[0]).toString();
-                    html.write("<td>" + fixHTML(rowRule) + "</td>");
-
-                }
-                html.write("</tr>");
-            }
-            html.write("</table>");
-            html.close();
-            System.out.println("Success! The parse table has been written to ptable.html in the project directory.");
-        //System.out.println(html);
-        } catch (IOException e) {
-            System.out.println("File writing failed. Please make sure you have write access to the project directory.");
-        }
-        System.out.println();
-    }
-    
-    // nonterminals like "<exp>" look like HTML tags, so we have to replace
-    // > and < with metacharacters &gt; and &lt;
-    private String fixHTML(String tag) {
-        return tag.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-    }
-
 }
