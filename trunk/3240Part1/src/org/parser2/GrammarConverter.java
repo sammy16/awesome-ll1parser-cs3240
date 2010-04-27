@@ -244,7 +244,7 @@ public class GrammarConverter {
             }
 	    }
 	    
-	    ArrayList<Symbol> maxPrefix = prefixOfMaximalLength(foundPrefix);
+	    ArrayList<Symbol> maxPrefix = prefixMaximalLength(foundPrefix);
 	    if(maxPrefix != null){
             cp.addAll(maxPrefix);
 	    }
@@ -255,16 +255,16 @@ public class GrammarConverter {
         ArrayList<Rule> ret = new ArrayList<Rule>();
         if(prefix != null){
             for(Rule rule : rules){
-                boolean mismatch = false;
+                boolean wrong = false;
                 if(rule.getRight().size() >= prefix.size()){
                     for(int i=0; i < prefix.size() - 1; i++){
                         if(!prefix.get(i).equals(rule.getRight().get(i))){
-                            mismatch = true;
+                            wrong = true;
                             break;
                         }
                     }
-                    if(!mismatch){
-                        ret.add(pr);
+                    if(!wrong){
+                        ret.add(rule);
                     }
                 }
             }
@@ -272,24 +272,24 @@ public class GrammarConverter {
         return ret;
     }
     
-    private ArrayList<Symbol> prefixOfMaximalLength(ArrayList<ArrayList<Symbol>> prefixes){
+    private ArrayList<Symbol> prefixMaximalLength(ArrayList<ArrayList<Symbol>> prefixes){
         int maxSize = 0;
         ArrayList<Symbol> maxP = null;
         for(ArrayList<Symbol> p : prefixes){
-                if(maxSize < p.size()){
-                        maxSize = p.size();
-                        maxP = p;
-                }
+            if(maxSize < p.size()){
+                maxSize = p.size();
+                maxP = p;
+            }
         }
         
         return maxP;
     }
     
-    private boolean containsPrefix(ArrayList<ArrayList<Symbol>> prefixes, ArrayList<Symbol> p){
-        for(ArrayList<Symbol> containedPre : prefixes){
-                if(p.equals(containedPre)){
-                        return true;
-                }
+    private boolean containsPrefix(ArrayList<ArrayList<Symbol>> prefixes, ArrayList<Symbol> therePre){
+        for(ArrayList<Symbol> herePre : prefixes){
+            if(therePre.equals(herePre)){
+                return true;
+            }
         }
         
         return false;
@@ -302,12 +302,12 @@ public class GrammarConverter {
         }
         
         if( rule1.get(0).equals(rule2.get(0))){
-                ArrayList<Symbol> r1Clone = new ArrayList<Symbol>(rule1);
-                ArrayList<Symbol> r2Clone = new ArrayList<Symbol>(rule2);
-                r1Clone.remove(0);
-                r2Clone.remove(0);
+                ArrayList<Symbol> r1 = new ArrayList<Symbol>(rule1);
+                ArrayList<Symbol> r2= new ArrayList<Symbol>(rule2);
+                r1.remove(0);
+                r2.remove(0);
                 commonPrefix.add(rule1.get(0));
-            getCommonPrefix(commonPrefix, r1Clone, r2Clone);
+            getCommonPrefix(commonPrefix, r1, r2);
         }
     }
     
