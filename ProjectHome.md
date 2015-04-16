@@ -1,0 +1,3 @@
+This is for a cs3240 project, in Spring 2010.
+
+In this project, we will be writing a LL(1) parser generator. The input will be a grammar specification (see the format of the specification below) for some language X and the output will be a LL(1) parser table for that language. You will also write a LL(1) parser driver (a simple program) which will implement LL(1) parsing algorithm discussed in the class. This driver will use the generated parsing table and perform parsing of a program written in language X by getting the necessary tokens and by applying rules on parsing stack. In the process, you will be writing a scanner for a specific language (as described below).
